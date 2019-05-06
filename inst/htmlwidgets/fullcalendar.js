@@ -10,6 +10,11 @@ HTMLWidgets.widget({
       renderValue: function(x) {
         if (calendar === null) {
           calendar = new FullCalendar.Calendar(el, x);
+
+          Shiny.addCustomMessageHandler("refetch_events", function(info) {
+            calendar.refetchEvents();
+          });
+
           calendar.render();
         } else {
           calendar.refetchEvents();  // Fetch events
