@@ -1,25 +1,48 @@
-# fullcalendar
+# fullcalendaR
 
-This is a simple R package that allows you to created calendar widgets from R using the FullCalendar javascript library. 
-I made this as a quick hack to try out the [htmlwidget](http://www.htmlwidgets.org/) framework, so it's not well tested nor does
-it include any fancy stuff, it's just a simple wrapper around the [fullCalendar](https://fullcalendar.io) function in FullCalendar.
+This is a simple R package that allows you to create calendar
+[widgets](http://www.htmlwidgets.org/) from R using the
+[FullCalendar](https://fullcalendar.io) javascript library.
 
 Install by using the `devtools` package:
 
 ``` r
-devtools::install_github("rasmusab/fullcalendar")
+devtools::install_github("jcalve/fullcalendar")
+```
+
+Or run from the command line:
+
+``` sh
+R -e "devtools::install()"
 ```
 
 # Example
 
 ``` r
-data = data.frame(title = paste("Event", 1:3),
-                 start = c("2017-03-01", "2017-03-01", "2017-03-15"),
-                 end = c("2017-03-02", "2017-03-04", "2017-03-18"),
-                 color = c("red", "blue", "green"))
-fullcalendar(data)
+calendar_data = data.frame(
+  title = paste("Event", 1:3),
+  start = c("2017-03-01", "2017-03-01", "2017-03-15"),
+  end = c("2017-03-02", "2017-03-04", "2017-03-18"),
+  color = c("red", "blue", "green")
+)
+## or a javascript function
+## calendar_data <- JS(read_file("www/js/calendarEventSource.js"))
+
+settings = list(
+  plugins = list("interaction", "dayGrid", "timeGrid"),
+  editable = TRUE,
+  locale = "es",
+  firstDay = 1,
+  defaultView = list("dayGridMonth"),
+  header = list(
+    left = "prev, next today",
+    center = "title",
+    right = "dayGridMonth, dayGridWeek, dayGridDay"
+  ),
+  ## Calendar events
+  eventClick = JS(read_file("calendarEventClick.js")),
+  eventDrop = JS(read_file("calendarEventDrop.js"))
+)
+
+fullcalendar(calendar_data, settings = settings)
 ```
-
-Which would give you the following calendar widget, not as a picture as below, but "interactive" in the sense that you could switch month:
-
-![Imgur](http://i.imgur.com/0BsTMIS.png)
