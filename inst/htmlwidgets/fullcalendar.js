@@ -15,8 +15,8 @@ HTMLWidgets.widget({
             calendar.refetchEvents();
           });
 
-          Shiny.addCustomMessageHandler("update_locale", function(locale) {
-            calendar.setOption("locale", locale);
+          Shiny.addCustomMessageHandler("set_option", function(info) {
+            calendar.setOption(info.option, info.value);
           });
 
           calendar.render();
